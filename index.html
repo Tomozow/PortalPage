@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio</title>
+  <meta name="description" content="GitHub で公開している制作物のポータルページ">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <img id="avatar" class="avatar" alt="" hidden>
+      <div>
+        <h1 id="name">Portfolio</h1>
+        <p id="tagline" class="tagline"></p>
+        <p class="links">
+          <a id="profile-link" href="#" target="_blank" rel="noopener">GitHub プロフィール</a>
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="controls">
+      <input id="search" type="search" placeholder="名前・説明・トピックで検索" aria-label="検索">
+      <select id="language" aria-label="言語で絞り込み">
+        <option value="">すべての言語</option>
+      </select>
+      <select id="sort" aria-label="並び替え">
+        <option value="updated">更新が新しい順</option>
+        <option value="stars">スター数順</option>
+        <option value="name">名前順</option>
+        <option value="created">作成が新しい順</option>
+      </select>
+    </div>
+
+    <p id="status" class="status">読み込み中…</p>
+
+    <section id="featured-section" hidden>
+      <h2>おすすめ</h2>
+      <div id="featured" class="grid"></div>
+    </section>
+
+    <section>
+      <h2 id="all-heading">すべての制作物</h2>
+      <div id="projects" class="grid"></div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <p>データは GitHub API から自動取得しています。</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
