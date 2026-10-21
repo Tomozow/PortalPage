@@ -27,8 +27,8 @@ window.PORTAL_CONFIG = {
   //   readmeJp:    true で README_JP.md への「日本語の説明」ボタンを表示（別ファイル名なら文字列で指定）
   overrides: {
     DashTray: { screenshot: "docs/screenshot.png" },
-    MultiPlatformLiveWatcher: {
-      description: "Twitch・YouTube・TwitCasting の配信状況をまとめて確認できる Chrome 拡張機能",
+    VRvisualizer: {
+      description: "Meta Quest 2 などの WebXR ブラウザで動く、没入型の音楽ビジュアライザー＆プレイヤー",
       readmeJp: true,
     },
   },
