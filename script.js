@@ -20,6 +20,10 @@
     "docs/screenshot.png", "screenshot.png", "docs/screenshot.jpg", "screenshots/screenshot.png", "docs/demo.gif",
   ];
 
+  // README を探すときの候補（日本語版を優先）
+  const README_CANDIDATES = ["README_JP.md", "README.ja.md", "README_ja.md", "README.md"];
+  const JA_PATTERN = /[\u3040-\u30ff]/g;
+
   const $ = (id) => document.getElementById(id);
   const state = { repos: [], query: "", language: "", sort: "updated" };
 
@@ -105,8 +109,14 @@
     return {
       name: repo.name,
       description: o.description ?? repo.description ?? "",
+      hasCustomDescription: o.description != null,
       htmlUrl: repo.html_url,
-      readmeJpUrl: o.readmeJp ? `${repo.html_url}/blob/${branch}/${o.readmeJp === true ? "README_JP.md" : o.readmeJp}` : "",
+      readmeFiles: (o.readme ? [o.readme] : README_CANDIDATES).map((path) => ({
+        raw: rawUrl(repo, path),
+        page: `${repo.html_url}/blob/${branch}/${path.split("/").map(encodeURIComponent).join("/")}`,
+      })),
+      readmeUrl: "",
+      readmeIsJa: false,
       screenshots: screenshotUrls(repo, o),
       demoUrl: safeUrl(o.url ?? repo.homepage ?? "") || pagesUrl(repo),
       language: repo.language || "",
@@ -144,8 +154,8 @@
            <img alt="${escapeHtml(r.name)} のスクリーンショット" data-candidates="${escapeHtml(JSON.stringify(r.screenshots))}">
          </button>`
       : "";
-    const readmeJp = r.readmeJpUrl
-      ? `<a class="btn" href="${escapeHtml(r.readmeJpUrl)}" target="_blank" rel="noopener">日本語の説明</a>`
+    const readme = r.readmeUrl
+      ? `<a class="btn" href="${escapeHtml(r.readmeUrl)}" target="_blank" rel="noopener">${r.readmeIsJa ? "日本語の説明" : "README"}</a>`
       : "";
     return `
       <article class="card">
@@ -160,7 +170,7 @@
         </div>
         <div class="actions">
           ${demo}
-          ${readmeJp}
+          ${readme}
           <a class="btn" href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">ソースコード</a>
         </div>
       </article>`;
@@ -247,6 +257,57 @@
     }
   }
 
+  function isJapanese(text) {
+    return (text.match(JA_PATTERN) || []).length >= 10;
+  }
+
+  // README の最初の文章の段落を、カード用の短い説明文として取り出す
+  function readmeExcerpt(md) {
+    const blocks = md
+      .replace(/<!--[\s\S]*?-->/g, "")
+      .replace(/```[\s\S]*?```/g, "")
+      .split(/\n\s*\n/);
+    for (const block of blocks) {
+      const text = block
+        .split("\n")
+        .filter((l) => !/^\s*(#|\||>|[-*+] |\d+\. |<|!\[|\[!\[|---)/.test(l))
+        .join(" ")
+        .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+        .replace(/[*_`]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+      // 「English | 日本語」のような言語切り替えリンクだけの行は飛ばす
+      if (text.length >= 15 && !/^(English|日本語)\b.{0,20}$/.test(text)) {
+        return text.length > 140 ? `${text.slice(0, 140)}…` : text;
+      }
+    }
+    return "";
+  }
+
+  async function fetchText(url) {
+    try {
+      const res = await fetch(url);
+      return res.ok ? await res.text() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  // 各リポジトリの README を探し、リンクと（必要なら）説明文を設定する
+  async function loadReadme(r) {
+    for (const file of r.readmeFiles) {
+      const md = await fetchText(file.raw);
+      if (md == null) continue;
+      r.readmeUrl = file.page;
+      r.readmeIsJa = isJapanese(md);
+      if (!r.hasCustomDescription && r.readmeIsJa && !/[\u3040-\u30ff\u4e00-\u9fff]/.test(r.description)) {
+        r.description = readmeExcerpt(md) || r.description;
+      }
+      return;
+    }
+  }
+
   async function main() {
     renderHeader(null);
     setupLightbox();
@@ -259,6 +320,7 @@
         .filter((r) => cfg.showForks || !r.fork)
         .filter((r) => cfg.showArchived || !r.archived)
         .map(normalize);
+      await Promise.all(state.repos.map(loadReadme));
       setupControls();
       render();
     } catch (e) {

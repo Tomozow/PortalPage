@@ -24,12 +24,9 @@ window.PORTAL_CONFIG = {
   //   url:         「デモを見る」ボタンのリンク先
   //   screenshot:  スクリーンショットの画像（リポジトリ内のパス、または https:// から始まる URL）。
   //                false にすると表示しない。未指定なら docs/screenshot.png などを自動で探す
-  //   readmeJp:    true で README_JP.md への「日本語の説明」ボタンを表示（別ファイル名なら文字列で指定）
+  //   readme:      README のファイル名（未指定なら README_JP.md → README.ja.md → README.md の順に自動で探す）
+  // 説明文が未設定または英語のときは、日本語 README の冒頭の文章を自動で説明文に使います
   overrides: {
     DashTray: { screenshot: "docs/screenshot.png" },
-    VRvisualizer: {
-      description: "Meta Quest 2 などの WebXR ブラウザで動く、没入型の音楽ビジュアライザー＆プレイヤー",
-      readmeJp: true,
-    },
   },
 };
