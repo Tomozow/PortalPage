@@ -23,7 +23,19 @@ GitHub API から公開リポジトリを自動取得して表示するため、
 | `exclude` | 一覧から外すリポジトリ名 |
 | `featured` | 「おすすめ」として先頭に固定表示するリポジトリ名 |
 | `showForks` / `showArchived` | フォーク / アーカイブ済みリポジトリを表示するか |
-| `overrides` | リポジトリごとの説明文・デモ URL の上書き |
+| `overrides` | リポジトリごとの説明文・デモ URL・スクリーンショット・日本語 README の設定 |
+
+### スクリーンショット
+
+リポジトリに次のいずれかのファイルがあると、カードの上部に自動で表示されます（上から順に探します）。クリックすると拡大表示します。
+
+- `docs/screenshot.png`
+- `screenshot.png`
+- `docs/screenshot.jpg`
+- `screenshots/screenshot.png`
+- `docs/demo.gif`
+
+別の画像を使いたいときは `overrides` の `screenshot` にパスを書きます。
 
 各リポジトリの説明文やトピック、デモ URL は GitHub のリポジトリ設定（About 欄）で設定すると、そのままページに反映されます。
 

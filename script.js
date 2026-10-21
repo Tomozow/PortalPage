@@ -15,6 +15,11 @@
     "Jupyter Notebook": "#DA5B0B", Svelte: "#ff3e00", Lua: "#000080", GDScript: "#355570",
   };
 
+  // スクリーンショットを自動で探すときの候補パス（上から順に試す）
+  const SCREENSHOT_CANDIDATES = cfg.screenshotCandidates || [
+    "docs/screenshot.png", "screenshot.png", "docs/screenshot.jpg", "screenshots/screenshot.png", "docs/demo.gif",
+  ];
+
   const $ = (id) => document.getElementById(id);
   const state = { repos: [], query: "", language: "", sort: "updated" };
 
@@ -82,12 +87,27 @@
     return `https://${owner}.github.io/${repo.name}/`;
   }
 
+  function rawUrl(repo, path) {
+    const branch = encodeURIComponent(repo.default_branch || "main");
+    const file = path.split("/").map(encodeURIComponent).join("/");
+    return `https://raw.githubusercontent.com/${repo.full_name}/${branch}/${file}`;
+  }
+
+  function screenshotUrls(repo, o) {
+    if (o.screenshot === false) return [];
+    if (o.screenshot) return [safeUrl(o.screenshot) || rawUrl(repo, o.screenshot)];
+    return SCREENSHOT_CANDIDATES.map((p) => rawUrl(repo, p));
+  }
+
   function normalize(repo) {
     const o = cfg.overrides[repo.name] || {};
+    const branch = encodeURIComponent(repo.default_branch || "main");
     return {
       name: repo.name,
       description: o.description ?? repo.description ?? "",
       htmlUrl: repo.html_url,
+      readmeJpUrl: o.readmeJp ? `${repo.html_url}/blob/${branch}/${o.readmeJp === true ? "README_JP.md" : o.readmeJp}` : "",
+      screenshots: screenshotUrls(repo, o),
       demoUrl: safeUrl(o.url ?? repo.homepage ?? "") || pagesUrl(repo),
       language: repo.language || "",
       topics: repo.topics || [],
@@ -119,8 +139,17 @@
     const demo = r.demoUrl
       ? `<a class="btn primary" href="${escapeHtml(r.demoUrl)}" target="_blank" rel="noopener">デモを見る</a>`
       : "";
+    const shot = r.screenshots.length
+      ? `<button type="button" class="shot" hidden aria-label="${escapeHtml(r.name)} のスクリーンショットを拡大">
+           <img alt="${escapeHtml(r.name)} のスクリーンショット" data-candidates="${escapeHtml(JSON.stringify(r.screenshots))}">
+         </button>`
+      : "";
+    const readmeJp = r.readmeJpUrl
+      ? `<a class="btn" href="${escapeHtml(r.readmeJpUrl)}" target="_blank" rel="noopener">日本語の説明</a>`
+      : "";
     return `
       <article class="card">
+        ${shot}
         <h3><a href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">${escapeHtml(r.name)}</a>${badges}</h3>
         <p class="desc${r.description ? "" : " empty"}">${escapeHtml(r.description || "説明はまだありません")}</p>
         ${topics}
@@ -131,6 +160,7 @@
         </div>
         <div class="actions">
           ${demo}
+          ${readmeJp}
           <a class="btn" href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">ソースコード</a>
         </div>
       </article>`;
@@ -160,9 +190,38 @@
     $("featured-section").hidden = featured.length === 0;
     $("featured").innerHTML = featured.map(card).join("");
     $("projects").innerHTML = rest.map(card).join("");
+    loadScreenshots();
     $("all-heading").textContent = `すべての制作物 (${rest.length})`;
     $("status").textContent =
       featured.length + rest.length === 0 ? "条件に一致する制作物はありません。" : "";
+  }
+
+  // 候補の画像を順に読み込み、見つかったものだけ表示する
+  function loadScreenshots() {
+    document.querySelectorAll(".shot img[data-candidates]").forEach((img) => {
+      const candidates = JSON.parse(img.dataset.candidates);
+      img.removeAttribute("data-candidates");
+      let i = 0;
+      img.onerror = () => {
+        i += 1;
+        if (i < candidates.length) img.src = candidates[i];
+      };
+      img.onload = () => { img.parentElement.hidden = false; };
+      img.src = candidates[0];
+    });
+  }
+
+  function setupLightbox() {
+    const box = $("lightbox");
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".shot");
+      if (!btn) return;
+      const img = btn.querySelector("img");
+      $("lightbox-img").src = img.currentSrc || img.src;
+      $("lightbox-img").alt = img.alt;
+      box.showModal();
+    });
+    box.addEventListener("click", () => box.close());
   }
 
   function setupControls() {
@@ -190,6 +249,7 @@
 
   async function main() {
     renderHeader(null);
+    setupLightbox();
     try {
       const { user, repos } = await load();
       renderHeader(user);

@@ -91,6 +91,36 @@ h2 { font-size: 1.15rem; margin: 24px 0 12px; }
 }
 .card:hover { border-color: var(--accent); transform: translateY(-2px); }
 
+.shot {
+  display: block;
+  margin: -16px -16px 4px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  background: var(--bg);
+  cursor: zoom-in;
+  aspect-ratio: 16 / 10;
+}
+.shot[hidden] { display: none; }
+.shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+
+.lightbox {
+  max-width: 95vw;
+  max-height: 95vh;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+  cursor: zoom-out;
+}
+.lightbox::backdrop { background: rgba(0, 0, 0, 0.7); }
+.lightbox img { max-width: 100%; max-height: calc(95vh - 64px); display: block; margin: 0 auto; }
+.lightbox p { margin: 6px 0 0; font-size: .8rem; }
+
 .card h3 { margin: 0; font-size: 1.05rem; word-break: break-word; }
 .card .desc { margin: 0; color: var(--muted); font-size: .92rem; flex: 1; }
 .card .desc.empty { font-style: italic; }

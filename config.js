@@ -19,7 +19,17 @@ window.PORTAL_CONFIG = {
   // アーカイブ済みリポジトリを表示するか
   showArchived: true,
 
-  // リポジトリごとに説明文やリンクを上書きしたい場合に使用
-  // 例: "my-app": { description: "日本語の説明", url: "https://example.com" }
-  overrides: {},
+  // リポジトリごとの上書き設定
+  //   description: カードに表示する説明文
+  //   url:         「デモを見る」ボタンのリンク先
+  //   screenshot:  スクリーンショットの画像（リポジトリ内のパス、または https:// から始まる URL）。
+  //                false にすると表示しない。未指定なら docs/screenshot.png などを自動で探す
+  //   readmeJp:    true で README_JP.md への「日本語の説明」ボタンを表示（別ファイル名なら文字列で指定）
+  overrides: {
+    DashTray: { screenshot: "docs/screenshot.png" },
+    MultiPlatformLiveWatcher: {
+      description: "Twitch・YouTube・TwitCasting の配信状況をまとめて確認できる Chrome 拡張機能",
+      readmeJp: true,
+    },
+  },
 };
