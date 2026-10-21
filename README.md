@@ -37,10 +37,9 @@ GitHub API から公開リポジトリを自動取得して表示するため、
 
 別の画像を使いたいときは `overrides` の `screenshot` にパスを書きます。
 
-### README と説明文
+### 説明文
 
-各リポジトリの README を `README_JP.md` → `README.ja.md` → `README_ja.md` → `README.md` の順に探し、見つかったものへのボタンをカードに表示します（日本語なら「日本語の説明」、それ以外は「README」）。
-GitHub の説明文（About 欄）が空または英語のときは、日本語 README の冒頭の文章を説明文として表示します。
+GitHub の説明文（About 欄）が空または英語のときは、README を `README_JP.md` → `README.ja.md` → `README_ja.md` → `README.md` の順に探し、日本語 README の冒頭の文章を説明文として表示します。
 
 各リポジトリの説明文やトピック、デモ URL は GitHub のリポジトリ設定（About 欄）で設定すると、そのままページに反映されます。
 

@@ -105,18 +105,12 @@
 
   function normalize(repo) {
     const o = cfg.overrides[repo.name] || {};
-    const branch = encodeURIComponent(repo.default_branch || "main");
     return {
       name: repo.name,
       description: o.description ?? repo.description ?? "",
       hasCustomDescription: o.description != null,
       htmlUrl: repo.html_url,
-      readmeFiles: (o.readme ? [o.readme] : README_CANDIDATES).map((path) => ({
-        raw: rawUrl(repo, path),
-        page: `${repo.html_url}/blob/${branch}/${path.split("/").map(encodeURIComponent).join("/")}`,
-      })),
-      readmeUrl: "",
-      readmeIsJa: false,
+      readmeUrls: (o.readme ? [o.readme] : README_CANDIDATES).map((path) => rawUrl(repo, path)),
       screenshots: screenshotUrls(repo, o),
       demoUrl: safeUrl(o.url ?? repo.homepage ?? "") || pagesUrl(repo),
       language: repo.language || "",
@@ -154,9 +148,6 @@
            <img alt="${escapeHtml(r.name)} のスクリーンショット" data-candidates="${escapeHtml(JSON.stringify(r.screenshots))}">
          </button>`
       : "";
-    const readme = r.readmeUrl
-      ? `<a class="btn" href="${escapeHtml(r.readmeUrl)}" target="_blank" rel="noopener">${r.readmeIsJa ? "日本語の説明" : "README"}</a>`
-      : "";
     return `
       <article class="card">
         ${shot}
@@ -170,7 +161,6 @@
         </div>
         <div class="actions">
           ${demo}
-          ${readme}
           <a class="btn" href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">ソースコード</a>
         </div>
       </article>`;
@@ -294,16 +284,13 @@
     }
   }
 
-  // 各リポジトリの README を探し、リンクと（必要なら）説明文を設定する
+  // 説明文が空または英語なら、日本語 README の冒頭の文章を説明文にする
   async function loadReadme(r) {
-    for (const file of r.readmeFiles) {
-      const md = await fetchText(file.raw);
+    if (r.hasCustomDescription || /[\u3040-\u30ff\u4e00-\u9fff]/.test(r.description)) return;
+    for (const url of r.readmeUrls) {
+      const md = await fetchText(url);
       if (md == null) continue;
-      r.readmeUrl = file.page;
-      r.readmeIsJa = isJapanese(md);
-      if (!r.hasCustomDescription && r.readmeIsJa && !/[\u3040-\u30ff\u4e00-\u9fff]/.test(r.description)) {
-        r.description = readmeExcerpt(md) || r.description;
-      }
+      if (isJapanese(md)) r.description = readmeExcerpt(md) || r.description;
       return;
     }
   }
