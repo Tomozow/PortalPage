@@ -4,8 +4,8 @@
     window.PORTAL_CONFIG || {}
   );
   const API = "https://api.github.com";
+  // 前回取得したデータ。GitHub API に接続できないとき（利用上限など）だけ使う
   const CACHE_KEY = `portal-cache:${cfg.username}`;
-  const CACHE_TTL = 10 * 60 * 1000;
 
   const LANG_COLORS = {
     JavaScript: "#f1e05a", TypeScript: "#3178c6", Python: "#3572A5", HTML: "#e34c26",
@@ -46,7 +46,7 @@
   function readCache() {
     try {
       const c = JSON.parse(localStorage.getItem(CACHE_KEY));
-      if (c && Date.now() - c.time < CACHE_TTL) return c.data;
+      if (c) return c.data;
     } catch {}
     return null;
   }
@@ -68,9 +68,18 @@
   }
 
   async function load() {
-    const cached = readCache();
-    if (cached) return cached;
+    try {
+      const data = await fetchFromApi();
+      writeCache(data);
+      return data;
+    } catch (e) {
+      const cached = readCache();
+      if (cached) return cached;
+      throw e;
+    }
+  }
 
+  async function fetchFromApi() {
     const user = await fetchJson(`${API}/users/${encodeURIComponent(cfg.username)}`);
     const repos = [];
     for (let page = 1; page <= 10; page++) {
@@ -80,9 +89,7 @@
       repos.push(...batch);
       if (batch.length < 100) break;
     }
-    const data = { user, repos };
-    writeCache(data);
-    return data;
+    return { user, repos };
   }
 
   function pagesUrl(repo) {
