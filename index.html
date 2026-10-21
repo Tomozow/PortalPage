@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Portfolio</title>
   <meta name="description" content="GitHub で公開している制作物のポータルページ">
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
   <header class="hero">
@@ -35,6 +35,8 @@
       </select>
     </div>
 
+    <nav id="category-tabs" class="tabs" aria-label="カテゴリ"></nav>
+
     <p id="status" class="status">読み込み中…</p>
 
     <section id="featured-section" hidden>
@@ -42,10 +44,7 @@
       <div id="featured" class="grid"></div>
     </section>
 
-    <section>
-      <h2 id="all-heading">すべての制作物</h2>
-      <div id="projects" class="grid"></div>
-    </section>
+    <div id="groups"></div>
   </main>
 
   <footer class="wrap footer">
@@ -57,7 +56,7 @@
     <p>クリックで閉じる</p>
   </dialog>
 
-  <script src="config.js?v=4"></script>
-  <script src="script.js?v=4"></script>
+  <script src="config.js?v=5"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>

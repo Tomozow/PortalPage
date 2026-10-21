@@ -68,6 +68,23 @@ a:hover { text-decoration: underline; }
 }
 .controls input { flex: 1 1 260px; min-width: 0; }
 
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
+.tab {
+  font: inherit;
+  font-size: .9rem;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.tab:hover { border-color: var(--accent); }
+.tab[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tab[aria-pressed="true"] .count { color: inherit; opacity: .85; }
+
+.count { font-size: .8em; font-weight: normal; color: var(--muted); margin-left: 2px; }
+
 .status { color: var(--muted); min-height: 1.6em; }
 
 h2 { font-size: 1.15rem; margin: 24px 0 12px; }

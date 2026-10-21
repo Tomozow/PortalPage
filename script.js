@@ -1,6 +1,6 @@
 (function () {
   const cfg = Object.assign(
-    { exclude: [], featured: [], showForks: false, showArchived: true, overrides: {} },
+    { exclude: [], featured: [], categories: [], showForks: false, showArchived: true, overrides: {} },
     window.PORTAL_CONFIG || {}
   );
   const API = "https://api.github.com";
@@ -25,7 +25,8 @@
   const JA_PATTERN = /[\u3040-\u30ff]/g;
 
   const $ = (id) => document.getElementById(id);
-  const state = { repos: [], query: "", language: "", sort: "updated" };
+  const OTHER_CATEGORY = "その他";
+  const state = { repos: [], query: "", language: "", sort: "updated", category: "" };
 
   function escapeHtml(s) {
     return String(s ?? "").replace(/[&<>"']/g, (c) => ({
@@ -103,10 +104,22 @@
     return SCREENSHOT_CANDIDATES.map((p) => rawUrl(repo, p));
   }
 
+  function categoryOf(name) {
+    const n = name.toLowerCase();
+    const c = cfg.categories.find((c) => c.repos.some((r) => r.toLowerCase() === n));
+    return c ? c.name : OTHER_CATEGORY;
+  }
+
+  function categoryNames() {
+    const names = cfg.categories.map((c) => c.name);
+    return state.repos.some((r) => r.category === OTHER_CATEGORY) ? [...names, OTHER_CATEGORY] : names;
+  }
+
   function normalize(repo) {
     const o = cfg.overrides[repo.name] || {};
     return {
       name: repo.name,
+      category: categoryOf(repo.name),
       description: o.description ?? repo.description ?? "",
       hasCustomDescription: o.description != null,
       htmlUrl: repo.html_url,
@@ -176,6 +189,7 @@
   function render() {
     const q = state.query.trim().toLowerCase();
     const matches = (r) =>
+      (!state.category || r.category === state.category) &&
       (!state.language || r.language === state.language) &&
       (!q || [r.name, r.description, ...r.topics].some((s) => s.toLowerCase().includes(q)));
 
@@ -189,9 +203,19 @@
 
     $("featured-section").hidden = featured.length === 0;
     $("featured").innerHTML = featured.map(card).join("");
-    $("projects").innerHTML = rest.map(card).join("");
+    $("groups").innerHTML = categoryNames()
+      .map((name) => {
+        const items = rest.filter((r) => r.category === name);
+        if (items.length === 0) return "";
+        return `
+          <section>
+            <h2>${escapeHtml(name)} <span class="count">${items.length}</span></h2>
+            <div class="grid">${items.map(card).join("")}</div>
+          </section>`;
+      })
+      .join("");
     loadScreenshots();
-    $("all-heading").textContent = `すべての制作物 (${rest.length})`;
+    renderTabs();
     $("status").textContent =
       featured.length + rest.length === 0 ? "条件に一致する制作物はありません。" : "";
   }
@@ -224,7 +248,23 @@
     box.addEventListener("click", () => box.close());
   }
 
+  function renderTabs() {
+    const tabs = [["", "すべて"], ...categoryNames().map((n) => [n, n])];
+    $("category-tabs").innerHTML = tabs
+      .map(([value, label]) => {
+        const count = state.repos.filter((r) => !value || r.category === value).length;
+        return `<button type="button" class="tab" data-category="${escapeHtml(value)}" aria-pressed="${state.category === value}">${escapeHtml(label)} <span class="count">${count}</span></button>`;
+      })
+      .join("");
+  }
+
   function setupControls() {
+    $("category-tabs").addEventListener("click", (e) => {
+      const tab = e.target.closest(".tab");
+      if (!tab) return;
+      state.category = tab.dataset.category;
+      render();
+    });
     const langs = [...new Set(state.repos.map((r) => r.language).filter(Boolean))].sort();
     $("language").insertAdjacentHTML(
       "beforeend",

@@ -19,6 +19,13 @@ window.PORTAL_CONFIG = {
   // アーカイブ済みリポジトリを表示するか
   showArchived: true,
 
+  // カテゴリ（上から順に表示）。どこにも入っていないリポジトリは「その他」に入ります
+  categories: [
+    { name: "配信", repos: ["OBS_pasteboard", "vts-goodposture-web", "chat-icon-studio"] },
+    { name: "クリエイティブ", repos: ["MangaSketcher", "VRvisualizer"] },
+    { name: "ユーティリティ", repos: ["DashTray"] },
+  ],
+
   // リポジトリごとの上書き設定
   //   description: カードに表示する説明文
   //   url:         「デモを見る」ボタンのリンク先
