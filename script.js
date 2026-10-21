@@ -116,9 +116,13 @@
     return c ? c.name : OTHER_CATEGORY;
   }
 
+  // 最近更新されたリポジトリがあるカテゴリほど先に並べる
   function categoryNames() {
     const names = cfg.categories.map((c) => c.name);
-    return state.repos.some((r) => r.category === OTHER_CATEGORY) ? [...names, OTHER_CATEGORY] : names;
+    if (state.repos.some((r) => r.category === OTHER_CATEGORY)) names.push(OTHER_CATEGORY);
+    const latest = (name) =>
+      Math.max(0, ...state.repos.filter((r) => r.category === name).map((r) => r.updated.getTime()));
+    return names.sort((a, b) => latest(b) - latest(a));
   }
 
   function normalize(repo) {
