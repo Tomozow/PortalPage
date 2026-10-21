@@ -19,11 +19,13 @@ window.PORTAL_CONFIG = {
   // アーカイブ済みリポジトリを表示するか
   showArchived: true,
 
-  // カテゴリ（上から順に表示）。どこにも入っていないリポジトリは「その他」に入ります
+  // カテゴリ（上から順に表示）
+  // 各リポジトリの GitHub の Topics に topic の値を付けると、そのカテゴリに入ります。
+  // どのカテゴリの topic も付いていないリポジトリは「その他」に入ります
   categories: [
-    { name: "配信", repos: ["OBS_pasteboard", "vts-goodposture-web", "chat-icon-studio"] },
-    { name: "クリエイティブ", repos: ["MangaSketcher", "VRvisualizer"] },
-    { name: "ユーティリティ", repos: ["DashTray"] },
+    { name: "配信", topic: "category-streaming" },
+    { name: "クリエイティブ", topic: "category-creative" },
+    { name: "ユーティリティ", topic: "category-utility" },
   ],
 
   // リポジトリごとの上書き設定

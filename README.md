@@ -22,9 +22,22 @@ GitHub API から公開リポジトリを自動取得して表示するため、
 | `displayName` / `tagline` | ページ上部の名前と紹介文 |
 | `exclude` | 一覧から外すリポジトリ名 |
 | `featured` | 「おすすめ」として先頭に固定表示するリポジトリ名 |
-| `categories` | カテゴリ名と、そこに入れるリポジトリ名の一覧（どこにも入っていないものは「その他」） |
+| `categories` | カテゴリ名と、対応する GitHub の Topic（下の「カテゴリ」を参照） |
 | `showForks` / `showArchived` | フォーク / アーカイブ済みリポジトリを表示するか |
 | `overrides` | リポジトリごとの説明文・デモ URL・スクリーンショット・README の設定 |
+
+### カテゴリ
+
+各リポジトリの GitHub ページ右上「About」の ⚙ から **Topics** に次のどれかを追加すると、そのカテゴリに表示されます。どれも付いていないリポジトリは「その他」に入ります。
+
+| Topic | カテゴリ |
+| --- | --- |
+| `category-streaming` | 配信 |
+| `category-creative` | クリエイティブ |
+| `category-utility` | ユーティリティ |
+
+カテゴリを増やすときは `config.js` の `categories` に `{ name: "表示名", topic: "category-xxx" }` を追加します（Topic に使えるのは英小文字・数字・ハイフンのみ）。
+反映はページの再読み込み時ですが、GitHub API の結果を最大 10 分ブラウザに保存しているため、すぐに変わらないときは少し待ってください。
 
 ### スクリーンショット
 

@@ -104,9 +104,8 @@
     return SCREENSHOT_CANDIDATES.map((p) => rawUrl(repo, p));
   }
 
-  function categoryOf(name) {
-    const n = name.toLowerCase();
-    const c = cfg.categories.find((c) => c.repos.some((r) => r.toLowerCase() === n));
+  function categoryOf(topics) {
+    const c = cfg.categories.find((c) => topics.includes(c.topic));
     return c ? c.name : OTHER_CATEGORY;
   }
 
@@ -119,7 +118,7 @@
     const o = cfg.overrides[repo.name] || {};
     return {
       name: repo.name,
-      category: categoryOf(repo.name),
+      category: categoryOf(repo.topics || []),
       description: o.description ?? repo.description ?? "",
       hasCustomDescription: o.description != null,
       htmlUrl: repo.html_url,
@@ -127,7 +126,8 @@
       screenshots: screenshotUrls(repo, o),
       demoUrl: safeUrl(o.url ?? repo.homepage ?? "") || pagesUrl(repo),
       language: repo.language || "",
-      topics: repo.topics || [],
+      // カテゴリ用の topic はカードのタグには出さない
+      topics: (repo.topics || []).filter((t) => !cfg.categories.some((c) => c.topic === t)),
       stars: repo.stargazers_count,
       forks: repo.forks_count,
       fork: repo.fork,
