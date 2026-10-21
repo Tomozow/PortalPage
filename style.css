@@ -108,8 +108,14 @@ h2 { font-size: 1.15rem; margin: 24px 0 12px; }
   transition: border-color .15s, transform .15s;
 }
 .card:hover { border-color: var(--accent); }
-/* スクリーンショットがあるときは左に画像、右に説明 */
-.card:has(.shot:not([hidden])) { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+/* 左に画像、右に説明。スクリーンショットがないときは左を空けて位置をそろえる */
+.card { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+.shot-spacer {
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+  aspect-ratio: 16 / 10;
+}
+.card:has(.shot:not([hidden])) .shot-spacer { display: none; }
 
 .info {
   display: flex;
@@ -212,7 +218,8 @@ h2 { font-size: 1.15rem; margin: 24px 0 12px; }
 .footer { color: var(--muted); font-size: .85rem; padding-top: 32px; padding-bottom: 32px; }
 
 @media (max-width: 760px) {
-  .card:has(.shot:not([hidden])) { grid-template-columns: 1fr; }
+  .card { grid-template-columns: 1fr; }
+  .shot-spacer { display: none; }
   .shot { border-right: 0; border-bottom: 1px solid var(--border); }
 }
 

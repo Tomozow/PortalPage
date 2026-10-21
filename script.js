@@ -195,6 +195,7 @@
     return `
       <article class="card">
         ${shot}
+        <div class="shot-spacer" aria-hidden="true"></div>
         <div class="info">
           <h3><a href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">${escapeHtml(r.name)}</a>${badges}</h3>
           <p class="desc${r.description ? "" : " empty"}">${escapeHtml(r.description || "説明はまだありません")}</p>
