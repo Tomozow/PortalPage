@@ -51,6 +51,12 @@ GitHub API から公開リポジトリを自動取得して表示するため、
 
 別の画像を使いたいときは `overrides` の `screenshot` にパスを書きます。
 
+### ダウンロードボタン
+
+GitHub の Releases にファイルが付いているリポジトリには、カードに「ダウンロード」ボタンが出ます（ファイルが1つなら直接ダウンロード、複数ならリリースのページへ）。
+
+リリース情報は GitHub Actions（`.github/workflows/update-releases.yml`）が **3 時間ごと**に調べて `data/releases.json` に書き出しています。新しいリリースをすぐに反映したいときは、このリポジトリの **Actions → Update release info → Run workflow** を押してください。
+
 ### 説明文
 
 GitHub の説明文（About 欄）が空または英語のときは、README を `README_JP.md` → `README.ja.md` → `README_ja.md` → `README.md` の順に探し、日本語 README の冒頭の文章を説明文として表示します。

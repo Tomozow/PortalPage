@@ -131,6 +131,7 @@
       htmlUrl: repo.html_url,
       readmeUrls: (o.readme ? [o.readme] : README_CANDIDATES).map((path) => rawUrl(repo, path)),
       screenshots: screenshotUrls(repo, o),
+      release: null,
       demoUrl: safeUrl(o.url ?? repo.homepage ?? "") || pagesUrl(repo),
       language: repo.language || "",
       // カテゴリ用の topic はカードのタグには出さない
@@ -148,6 +149,24 @@
     return d.toLocaleDateString("ja-JP", { year: "numeric", month: "short", day: "numeric" });
   }
 
+  function formatSize(bytes) {
+    if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+    return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  }
+
+  // ファイルが1つなら直接ダウンロード、複数ならリリースのページへ
+  function downloadButton(release) {
+    if (!release) return "";
+    const single = release.assets.length === 1 ? release.assets[0] : null;
+    const href = safeUrl(single ? single.url : release.url);
+    if (!href) return "";
+    const detail = single ? `${single.name}・${formatSize(single.size)}` : `${release.assets.length} ファイル`;
+    return `<a class="btn download" href="${escapeHtml(href)}" rel="noopener">
+        <span>ダウンロード <span class="ver">${escapeHtml(release.tag)}</span></span>
+        <small>${escapeHtml(detail)}</small>
+      </a>`;
+  }
+
   function card(r) {
     const color = LANG_COLORS[r.language] || "#8b949e";
     const badges = [
@@ -163,6 +182,7 @@
     const demo = r.demoUrl
       ? `<a class="btn primary" href="${escapeHtml(r.demoUrl)}" target="_blank" rel="noopener">デモを見る</a>`
       : "";
+    const download = downloadButton(r.release);
     const shot = r.screenshots.length
       ? `<button type="button" class="shot" hidden aria-label="${escapeHtml(r.name)} のスクリーンショットを拡大">
            <img alt="${escapeHtml(r.name)} のスクリーンショット" data-candidates="${escapeHtml(JSON.stringify(r.screenshots))}">
@@ -171,17 +191,20 @@
     return `
       <article class="card">
         ${shot}
-        <h3><a href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">${escapeHtml(r.name)}</a>${badges}</h3>
-        <p class="desc${r.description ? "" : " empty"}">${escapeHtml(r.description || "説明はまだありません")}</p>
-        ${topics}
-        <div class="meta">
-          ${lang}
-          <span>★ ${r.stars}</span>
-          <span>更新: ${formatDate(r.updated)}</span>
-        </div>
-        <div class="actions">
-          ${demo}
-          <a class="btn" href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">ソースコード</a>
+        <div class="info">
+          <h3><a href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">${escapeHtml(r.name)}</a>${badges}</h3>
+          <p class="desc${r.description ? "" : " empty"}">${escapeHtml(r.description || "説明はまだありません")}</p>
+          ${topics}
+          <div class="meta">
+            ${lang}
+            <span>★ ${r.stars}</span>
+            <span>更新: ${formatDate(r.updated)}</span>
+          </div>
+          <div class="actions">
+            ${download}
+            ${demo}
+            <a class="btn" href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">ソースコード</a>
+          </div>
         </div>
       </article>`;
   }
@@ -342,6 +365,16 @@
     }
   }
 
+  // GitHub Actions が定期的に作るリリース情報（data/releases.json）を読み込む
+  async function loadReleases() {
+    try {
+      const res = await fetch(`data/releases.json?t=${Math.floor(Date.now() / 60000)}`);
+      if (!res.ok) return;
+      const releases = await res.json();
+      for (const r of state.repos) r.release = releases[r.name] || null;
+    } catch {}
+  }
+
   async function main() {
     renderHeader(null);
     setupLightbox();
@@ -354,7 +387,7 @@
         .filter((r) => cfg.showForks || !r.fork)
         .filter((r) => cfg.showArchived || !r.archived)
         .map(normalize);
-      await Promise.all(state.repos.map(loadReadme));
+      await Promise.all([...state.repos.map(loadReadme), loadReleases()]);
       setupControls();
       render();
     } catch (e) {

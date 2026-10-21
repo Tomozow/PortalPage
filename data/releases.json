@@ -1,0 +1,50 @@
+{
+  "DashTray": {
+    "tag": "v1.0.1",
+    "url": "https://github.com/Tomozow/DashTray/releases/tag/v1.0.1",
+    "publishedAt": "2026-10-21T02:33:57Z",
+    "assets": [
+      {
+        "name": "DashTray.zip",
+        "url": "https://github.com/Tomozow/DashTray/releases/download/v1.0.1/DashTray.zip",
+        "size": 3162381
+      }
+    ]
+  },
+  "LayerRenamer": {
+    "tag": "v1.1.0",
+    "url": "https://github.com/Tomozow/LayerRenamer/releases/tag/v1.1.0",
+    "publishedAt": "2026-10-21T03:50:15Z",
+    "assets": [
+      {
+        "name": "LayerRenamer_v1.1.0.zip",
+        "url": "https://github.com/Tomozow/LayerRenamer/releases/download/v1.1.0/LayerRenamer_v1.1.0.zip",
+        "size": 24170667
+      }
+    ]
+  },
+  "OBS_pasteboard": {
+    "tag": "v0.1.0",
+    "url": "https://github.com/Tomozow/OBS_pasteboard/releases/tag/v0.1.0",
+    "publishedAt": "2026-10-05T10:09:39Z",
+    "assets": [
+      {
+        "name": "obs_pasteboard-v0.1.0.zip",
+        "url": "https://github.com/Tomozow/OBS_pasteboard/releases/download/v0.1.0/obs_pasteboard-v0.1.0.zip",
+        "size": 34004
+      }
+    ]
+  },
+  "chat-icon-studio": {
+    "tag": "v0.1.0",
+    "url": "https://github.com/Tomozow/chat-icon-studio/releases/tag/v0.1.0",
+    "publishedAt": "2026-09-20T19:36:29Z",
+    "assets": [
+      {
+        "name": "Chat.Icon.Studio_0.1.0_x64-setup.exe",
+        "url": "https://github.com/Tomozow/chat-icon-studio/releases/download/v0.1.0/Chat.Icon.Studio_0.1.0_x64-setup.exe",
+        "size": 2377505
+      }
+    ]
+  }
+}
