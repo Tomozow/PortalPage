@@ -35,6 +35,18 @@
       }
     ]
   },
+  "ScreenFrame": {
+    "tag": "v1.0.0",
+    "url": "https://github.com/Tomozow/ScreenFrame/releases/tag/v1.0.0",
+    "publishedAt": "2026-10-22T01:43:25Z",
+    "assets": [
+      {
+        "name": "ScreenFrame-v1.0.0-win-x64.zip",
+        "url": "https://github.com/Tomozow/ScreenFrame/releases/download/v1.0.0/ScreenFrame-v1.0.0-win-x64.zip",
+        "size": 443276
+      }
+    ]
+  },
   "chat-icon-studio": {
     "tag": "v0.1.0",
     "url": "https://github.com/Tomozow/chat-icon-studio/releases/tag/v0.1.0",
