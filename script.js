@@ -195,7 +195,7 @@
     return `
       <article class="card">
         ${shot}
-        <div class="shot-spacer" aria-hidden="true"></div>
+        <div class="shot-spacer${r.screenshots.length ? "" : " no-image"}" aria-hidden="true">no image</div>
         <div class="info">
           <h3><a href="${escapeHtml(r.htmlUrl)}" target="_blank" rel="noopener">${escapeHtml(r.name)}</a>${badges}</h3>
           <p class="desc${r.description ? "" : " empty"}">${escapeHtml(r.description || "説明はまだありません")}</p>
@@ -264,6 +264,7 @@
       img.onerror = () => {
         i += 1;
         if (i < candidates.length) img.src = candidates[i];
+        else img.closest(".card").querySelector(".shot-spacer").classList.add("no-image");
       };
       img.onload = () => { img.parentElement.hidden = false; };
       img.src = candidates[0];

@@ -114,7 +114,16 @@ h2 { font-size: 1.15rem; margin: 24px 0 12px; }
   border-right: 1px solid var(--border);
   background: var(--bg);
   aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  font-size: .9rem;
+  letter-spacing: .08em;
+  user-select: none;
 }
+/* 画像の候補がすべて見つからなかったら「no image」と出す（読み込み中は出さない） */
+.shot-spacer.no-image { color: var(--muted); }
 .card:has(.shot:not([hidden])) .shot-spacer { display: none; }
 
 .info {
@@ -219,7 +228,8 @@ h2 { font-size: 1.15rem; margin: 24px 0 12px; }
 
 @media (max-width: 760px) {
   .card { grid-template-columns: 1fr; }
-  .shot-spacer { display: none; }
+  .shot-spacer:not(.no-image) { display: none; }
+  .shot-spacer { border-right: 0; border-bottom: 1px solid var(--border); aspect-ratio: 16 / 5; }
   .shot { border-right: 0; border-bottom: 1px solid var(--border); }
 }
 
