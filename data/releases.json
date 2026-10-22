@@ -65,29 +65,9 @@
     "publishedAt": "2026-10-22T02:19:27Z",
     "assets": [
       {
-        "name": "focus-source-1.0.0-macos-universal.pkg",
-        "url": "https://github.com/Tomozow/focus-sync/releases/download/1.0.0/focus-source-1.0.0-macos-universal.pkg",
-        "size": 20551
-      },
-      {
-        "name": "focus-source-1.0.0-source.tar.xz",
-        "url": "https://github.com/Tomozow/focus-sync/releases/download/1.0.0/focus-source-1.0.0-source.tar.xz",
-        "size": 35300
-      },
-      {
         "name": "focus-source-1.0.0-windows-x64.zip",
         "url": "https://github.com/Tomozow/focus-sync/releases/download/1.0.0/focus-source-1.0.0-windows-x64.zip",
         "size": 825084
-      },
-      {
-        "name": "focus-source-1.0.0-x86_64-linux-gnu-dbgsym.ddeb",
-        "url": "https://github.com/Tomozow/focus-sync/releases/download/1.0.0/focus-source-1.0.0-x86_64-linux-gnu-dbgsym.ddeb",
-        "size": 2378
-      },
-      {
-        "name": "focus-source-1.0.0-x86_64-linux-gnu.deb",
-        "url": "https://github.com/Tomozow/focus-sync/releases/download/1.0.0/focus-source-1.0.0-x86_64-linux-gnu.deb",
-        "size": 4612
       }
     ]
   },
