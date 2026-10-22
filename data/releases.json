@@ -70,5 +70,17 @@
         "size": 42512619
       }
     ]
+  },
+  "virtualkeyboard": {
+    "tag": "v2.0.0",
+    "url": "https://github.com/Tomozow/virtualkeyboard/releases/tag/v2.0.0",
+    "publishedAt": "2026-10-22T02:13:40Z",
+    "assets": [
+      {
+        "name": "VirtualFunctions.exe",
+        "url": "https://github.com/Tomozow/virtualkeyboard/releases/download/v2.0.0/VirtualFunctions.exe",
+        "size": 65154231
+      }
+    ]
   }
 }
