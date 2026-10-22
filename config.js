@@ -26,6 +26,7 @@ window.PORTAL_CONFIG = {
     { name: "配信", topic: "category-streaming" },
     { name: "クリエイティブ", topic: "category-creative" },
     { name: "ユーティリティ", topic: "category-utility" },
+    { name: "VR", topic: "category-vr" },
   ],
 
   // リポジトリごとの上書き設定
@@ -37,5 +38,6 @@ window.PORTAL_CONFIG = {
   // 説明文が未設定または英語のときは、日本語 README の冒頭の文章を自動で説明文に使います
   overrides: {
     DashTray: { screenshot: "docs/screenshot.png" },
+    MangaNameStudio: { screenshot: "docs/screenshots/overview.jpg" },
   },
 };

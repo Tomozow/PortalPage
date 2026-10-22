@@ -36,6 +36,7 @@ GitHub API から公開リポジトリを自動取得して表示するため、
 | `category-streaming` | 配信 |
 | `category-creative` | クリエイティブ |
 | `category-utility` | ユーティリティ |
+| `category-vr` | VR |
 
 カテゴリを増やすときは `config.js` の `categories` に `{ name: "表示名", topic: "category-xxx" }` を追加します（Topic に使えるのは英小文字・数字・ハイフンのみ）。
 ページを再読み込みすると反映されます。

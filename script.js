@@ -126,7 +126,9 @@
   }
 
   function normalize(repo) {
-    const o = cfg.overrides[repo.name] || {};
+    // リポジトリ名の大文字・小文字の違いは無視する
+    const key = Object.keys(cfg.overrides).find((k) => k.toLowerCase() === repo.name.toLowerCase());
+    const o = key ? cfg.overrides[key] : {};
     return {
       name: repo.name,
       category: categoryOf(repo.topics || []),
