@@ -39,5 +39,6 @@ window.PORTAL_CONFIG = {
   overrides: {
     DashTray: { screenshot: "docs/screenshot.png" },
     MangaNameStudio: { screenshot: "docs/screenshots/overview.jpg" },
+    virtualkeyboard: { screenshot: "assets/screenshot.png" },
   },
 };
