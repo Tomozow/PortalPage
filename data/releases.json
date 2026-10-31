@@ -1,13 +1,13 @@
 {
   "DashTray": {
-    "tag": "v1.0.2",
-    "url": "https://github.com/Tomozow/DashTray/releases/tag/v1.0.2",
-    "publishedAt": "2026-10-21T05:34:49Z",
+    "tag": "v1.0.3",
+    "url": "https://github.com/Tomozow/DashTray/releases/tag/v1.0.3",
+    "publishedAt": "2026-10-31T10:43:01Z",
     "assets": [
       {
         "name": "DashTray.zip",
-        "url": "https://github.com/Tomozow/DashTray/releases/download/v1.0.2/DashTray.zip",
-        "size": 3165917
+        "url": "https://github.com/Tomozow/DashTray/releases/download/v1.0.3/DashTray.zip",
+        "size": 3165959
       }
     ]
   },
