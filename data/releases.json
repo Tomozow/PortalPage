@@ -1,4 +1,16 @@
 {
+  "ClockPlayer": {
+    "tag": "v0.2.3",
+    "url": "https://github.com/Tomozow/ClockPlayer/releases/tag/v0.2.3",
+    "publishedAt": "2026-11-02T02:35:07Z",
+    "assets": [
+      {
+        "name": "ClockPlayer-v0.2.3.zip",
+        "url": "https://github.com/Tomozow/ClockPlayer/releases/download/v0.2.3/ClockPlayer-v0.2.3.zip",
+        "size": 1224421
+      }
+    ]
+  },
   "DashTray": {
     "tag": "v1.0.3",
     "url": "https://github.com/Tomozow/DashTray/releases/tag/v1.0.3",
