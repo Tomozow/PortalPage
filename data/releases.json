@@ -1,13 +1,13 @@
 {
   "ClockPlayer": {
-    "tag": "v0.2.3",
-    "url": "https://github.com/Tomozow/ClockPlayer/releases/tag/v0.2.3",
-    "publishedAt": "2026-11-02T02:35:07Z",
+    "tag": "v0.2.4",
+    "url": "https://github.com/Tomozow/ClockPlayer/releases/tag/v0.2.4",
+    "publishedAt": "2026-11-04T05:24:01Z",
     "assets": [
       {
-        "name": "ClockPlayer-v0.2.3.zip",
-        "url": "https://github.com/Tomozow/ClockPlayer/releases/download/v0.2.3/ClockPlayer-v0.2.3.zip",
-        "size": 1224421
+        "name": "ClockPlayer-v0.2.4.zip",
+        "url": "https://github.com/Tomozow/ClockPlayer/releases/download/v0.2.4/ClockPlayer-v0.2.4.zip",
+        "size": 1224939
       }
     ]
   },
